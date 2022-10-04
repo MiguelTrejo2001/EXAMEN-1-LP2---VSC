@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXAMEN LP2</title>
+</head>
+<body class="conteiner">
+
+    <a style="font-family: Arial, Helvetica, sans-serif; font-size: 35px;">EJERCICIO C:</a>
+<canvas id="myChart" style="height: 40vh; width: 80vw;"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    var ctx = document.getElementById('myChart')
+    var myChart = new Chart(ctx, {
+        type:'bar',
+        data:{
+            datasets: [{
+                label: 'GRÁFICO ESTADÍSTICO DE CANTIDAD DE PRODUCTOS POR CATEGORÍA',
+                backgroundColor: ['limegreen','green','#468c6c'],
+                borderColor: ['white'],
+            }]
+        },
+    })
+
+    let url = 'http://localhost:8080/api/categories/all'
+    fetch(url)
+        .then( response => response.json() )
+        .then( datos => mostrar(datos) )
+        .catch( error => console.log(error) )
+
+
+    const mostrar = (articulos) =>{
+        articulos.forEach(element => {
+            myChart.data['labels'].push(element.CATEGORIA)
+            myChart.data['datasets'][0].data.push(element.CANTIDAD)
+            myChart.update()
+        });                     
+    }  
+</script>
+</body>
